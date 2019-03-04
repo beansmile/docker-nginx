@@ -1,7 +1,7 @@
 FROM nginx
 
 RUN apt-get update -qq \
-  && apt-get -y install logrotate \
-  && rm -rf /var/lib/apt/lists/*
+    && apt-get -y install logrotate dumb-init\
+    && rm -rf /var/lib/apt/lists/*
 
-CMD service cron start && nginx -g 'daemon off;'
+CMD ["/usr/bin/dumb-init", "sh", "-c", "service cron start; nginx -g 'daemon off;'"]
